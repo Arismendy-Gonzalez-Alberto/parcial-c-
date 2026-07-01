@@ -2,7 +2,8 @@
 
 
 using System;
-using System.Collections.Generic;   
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ClubDeportivo
 {
@@ -51,27 +52,33 @@ namespace ClubDeportivo
     {
         static void Main(string[] args)
         {
- 
             List<Socio> listaSocios = new List<Socio>
-            {
-                new Socio(1, "Carlos Pérez", TipoMembresia.VIP, 3),
-                new Socio(2, "María Gómez", TipoMembresia.Premium, 5),
-                new Socio(3, "Luis Fernández", TipoMembresia.Basica, 2),
-                new Socio(4, "Ana Torres", TipoMembresia.VIP, 10)
-            };
+    {
+        new Socio(1, "Carlos Pérez", TipoMembresia.VIP, 3),
+        new Socio(2, "María Gómez", TipoMembresia.Premium, 5),
+        new Socio(3, "Luis Fernández", TipoMembresia.Basica, 2),
+        new Socio(4, "Ana Torres", TipoMembresia.VIP, 10)
+    };
 
-    
+            // Calcular el máximo de días iniciales
+            int maxDias = listaSocios.Max(s => s.DiasRestantes);
 
-            Console.WriteLine("=== SIMULACIÓN DE ACCESO PARA TODOS LOS SOCIOS (1 día) ===\n");
-            foreach (Socio socio in listaSocios)
+            Console.WriteLine($"=== SIMULACIÓN DE {maxDias} DÍAS (HASTA AGOTAR TODOS) ===\n");
+
+            for (int dia = 1; dia <= maxDias; dia++)
             {
-                bool acceso = socio.IntentarAcceso(out string mensaje);
-                Console.WriteLine(mensaje);
-                Console.WriteLine("------------------------------------------------------");
+                Console.WriteLine($"--- DÍA {dia} ---");
+
+                foreach (Socio socio in listaSocios)
+                {
+                    bool acceso = socio.IntentarAcceso(out string mensaje);
+                    Console.WriteLine(mensaje);
+                }
+
+                Console.WriteLine("----------------------------------------\n");
             }
 
-
-            Console.WriteLine("\nPresione cualquier tecla para salir...");
+            Console.WriteLine("¡Todos los socios han agotado sus días!");
             Console.ReadKey();
         }
     }
